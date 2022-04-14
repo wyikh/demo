@@ -129,7 +129,7 @@ open_db();
 		</section>
 	</main>
 
-	<footer>© Kennth Lam 2020</footer>
+	<footer>©2020</footer>
 
 	<script>
 		$(document).ready(function () {
