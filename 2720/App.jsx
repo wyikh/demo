@@ -1,8 +1,4 @@
-// Lai Chun Yin 1155125168
-// Leung Yun Ki 1155109801
-// Philip Tarrantino Limas 1155122456
-// Wong Yik Hin 1155096739
-// KEI Yat-long 1155127069
+
 
 const { useRouteMatch, useParams, useLocation } = ReactRouterDOM;
 const { BrowserRouter, Link, Route, Switch } = ReactRouterDOM;
