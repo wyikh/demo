@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - public\javascripts\personalpage.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>public\javascripts\personalpage.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">66.75</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">260</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">33.67</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">1.59</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">$(document).ready(function () {
+
+    if ($.cookie(&quot;A&quot;)!=&quot;true&quot;)
+    {
+        $(&quot;#vuser&quot;).hide();
+    }
+    viewpost()
+
+});
+
+
+function viewpost()
+{
+    var name = $.cookie(&quot;username&quot;);
+    $.post(&quot;/post/show&quot;, {
+        &quot;holder&quot;:name
+    }, function(res){
+        if (res.status==1){
+            alert(res.msg);
+        }
+        else{
+
+            console.log(res.data)
+
+            var locMap = {};
+            var count = 0;
+            var element ;
+
+            var content=document.createElement(&quot;div&quot;)
+
+            const el = document.getElementById(&quot;action&quot;);
+            while (el.firstChild) el.removeChild(el.firstChild);
+          
+            res.data.forEach((e2) =&gt; {
+              locMap[count] = e2;
+              count++;
+            });
+            if (count==0)
+            {
+                document.querySelector(&quot;#action&quot;).innerHTML += `&lt;h4 style=&quot;color:red;&quot;&gt;You don not have post, Create One Post Now!&lt;/h4&gt;`;
+            }
+
+            for (let i = 0; i &lt; count; i++) {
+                element = 
+                `
+                &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;a href=&quot;item_detail.html?value=`+locMap[i][&quot;_id&quot;]+`&quot;&gt;
+                &lt;div class=&quot;outside&quot;&gt;
+                &lt;div style=&quot;display:flex&quot;&gt;
+                &lt;img src=&quot;../public/images/usericon.png&quot; style=&quot;width:30px; float:left;&quot;/&gt;
+                &lt;h6&gt; `+ locMap[i][&quot;holder&quot;] +`&lt;/h6&gt; 
+                &lt;/div&gt;&lt;br/&gt;
+
+                    &lt;div class=&quot;upper&quot;&gt;
+                    &lt;img src=&#039;photos/`+locMap[i][&quot;photos&quot;]+`&#039;&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;lower&quot;&gt;
+                        &lt;h5&gt;`+ locMap[i][&quot;title&quot;]+ `&lt;/h5&gt;
+                        &lt;span&gt;` +locMap[i][&quot;content&quot;]+ `&lt;/span&gt;&lt;br/&gt;&lt;br/&gt;
+                        &lt;u&gt; --` +locMap[i][&quot;itemusage&quot;]+ `--&lt;/u&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+                
+            `
+                 document.querySelector(&quot;#action&quot;).innerHTML += element;
+  
+              }
+  
+        }
+    });
+
+    
+}
+
+
+function changepwd()
+{
+    const el = document.getElementById(&quot;action&quot;);
+    while (el.firstChild) el.removeChild(el.firstChild);
+
+
+    element=
+    `
+    &lt;fieldset id=&quot;chpwd&quot; style=&quot;margin-left:auto; margin-right:auto;&quot;&gt;
+        &lt;h3&gt;Change Password&lt;/h3&gt;
+        &lt;label&gt;Old Password&lt;/label&gt;
+        &lt;input type=&quot;password&quot; id=&quot;opwd1&quot; name=&quot;opwd1&quot; style=&quot;width: 100% !important;&quot; /&gt;
+
+        &lt;label&gt;Password&lt;/label&gt;
+        &lt;input type=&quot;password&quot; id=&quot;pwd1&quot; name=&quot;pwd1&quot; style=&quot;width: 100% !important;&quot;/&gt;
+
+        &lt;label&gt;Confirm Password&lt;/label&gt;
+        &lt;input type=&quot;password&quot; id=&quot;confirmpassword&quot; name=&quot;confirmpassword&quot; style=&quot;width: 100% !important;&quot;/&gt;
+
+        &lt;div class=&quot;btns&quot;&gt;
+            &lt;input type=&quot;submit&quot; onclick=&quot;updatepwd()&quot; value=&quot;Update&quot; /&gt;
+        &lt;/div&gt;
+    &lt;/fieldset&gt;
+    `;
+
+    document.querySelector(&quot;#action&quot;).innerHTML += element;
+
+}
+
+function updatepwd()
+{
+    let opwd = $(&quot;#opwd1&quot;).val();
+    let pwd = $(&quot;#pwd1&quot;).val();
+    let confirmpassword = $(&quot;#confirmpassword&quot;).val();
+
+    if (opwd==&quot;&quot; || pwd == &quot;&quot; || confirmpassword == &quot;&quot;)
+    {
+        alert(&quot;please fillin all the fields!&quot;);
+    }
+
+    else if (pwd != confirmpassword) {
+        alert(&quot;Your Password and Confirm Password do not match!&quot;);
+    }
+
+    else {
+        $.post(&quot;/member/changePass&quot;, { &quot;email&quot;: $.cookie(&quot;useremail&quot;), &quot;password&quot;: pwd ,&quot;oldpassword&quot;:opwd , &quot;confirmpassword&quot;:confirmpassword}, function (res) {
+            if (res.status == 0) {
+                alert(&quot;Password Changed!&quot;);
+                location.href = &#039;/public/personalpage.html&#039;;
+            }
+            else
+            {
+                alert(res.msg);
+            }
+        });
+    }
+
+}
+
+
+function creatpost()
+{
+    const el = document.getElementById(&quot;action&quot;);
+    while (el.firstChild) el.removeChild(el.firstChild);
+
+
+    element=
+    `
+    &lt;fieldset id=&quot;chpwd&quot; style=&quot;margin-left:auto; margin-right:auto;&quot;&gt;
+        &lt;h3&gt;Create Post&lt;/h3&gt;
+        &lt;label&gt;Item Name&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;title&quot; name=&quot;title&quot; style=&quot;width: 100% !important;&quot; /&gt;
+
+        &lt;label&gt;itemusage&lt;/label&gt;
+            &lt;select id=&quot;itemusage&quot; style=&quot;width: 100% !important;&quot;&gt;
+                &lt;option value=&quot;First-Hand&quot;&gt;First-Hand&lt;/option&gt;
+                &lt;option value=&quot;Second-Hand&quot;&gt;Second-Hand&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;div&gt;
+            &lt;label for=&quot;editim&quot;&gt; Choose Image &lt;/label&gt;
+            &lt;div&gt; &lt;input type=&quot;file&quot; name=&quot;file&quot; id=&quot;photo1&quot; accept=&quot;image/jpeg,image/jpg,image/gif,image/png&quot; onchange=&quot;Editp(event)&quot; /&gt; &lt;/div&gt;
+            &lt;div&gt; &lt;img id=&quot;edit1&quot;/&gt; &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;label&gt;Description&lt;/label&gt;
+        &lt;textarea id=&quot;description&quot; name=&quot;description&quot; style=&quot;width: 100% !important;&quot;&gt;&lt;/textarea&gt;
+
+        &lt;div class=&quot;btns&quot;&gt;
+            &lt;input type=&quot;submit&quot; onclick=&quot;postcreate()&quot; value=&quot;Create&quot; /&gt;
+        &lt;/div&gt;
+    &lt;/fieldset&gt;
+    `;
+
+    document.querySelector(&quot;#action&quot;).innerHTML += element;
+
+
+}
+
+
+function Editp(e) {
+    var image = document.getElementById(&#039;edit1&#039;);
+    image.src = URL.createObjectURL(e.target.files[0]);
+    image.onload = function () {
+        URL.revokeObjectURL(image.src)
+    }
+};
+
+function postcreate()
+{   
+    let title = $(&quot;#title&quot;).val();
+    let itemusage = $(&quot;#itemusage&quot;).val();
+    let photo = $(&quot;#photo1&quot;).val().replace(/C:\\fakepath\\/i, &#039;&#039;);
+    let description = $(&quot;#description&quot;).val();
+   
+
+
+    if (title==&quot;&quot; || itemusage == &quot;&quot; || description == &quot;&quot;)
+    {
+        alert(&quot;please fillin all the fields!&quot;);
+    }
+
+    else {
+        $.post(&quot;/post/create&quot;, { &quot;holder&quot;: $.cookie(&quot;username&quot;), &quot;title&quot;: title ,&quot;itemusage&quot;:itemusage , &quot;content&quot;:description, &quot;photo&quot;:photo}, function (res) {
+            if (res.status == 0) {
+                
+                var postdata = { 
+                    title:title, content:description, username: $.cookie(&quot;username&quot;), postid:res.data._id, itemusage:itemusage
+                }
+                $.post(&quot;/blog/addarticle&quot;, postdata, function(res){
+                    if(res.status == 0)
+                    {
+                        viewpost();
+                    }
+                });
+            }
+            else
+            {
+                alert(res.msg);
+            }
+        });
+    }
+}
+
+function viewuser()
+{
+    $.get(&quot;/member/view&quot;, {
+    }, function(res){
+        if (res.status==1){
+            alert(res.msg);
+        }
+        else{
+            var locMap = {};
+            var count = 0;
+            var element ;
+
+            const el = document.getElementById(&quot;action&quot;);
+            while (el.firstChild) el.removeChild(el.firstChild);
+          
+            res.data.forEach((e2) =&gt; {
+              locMap[count] = e2;
+              count++;
+            });
+            if (count==0)
+            {
+                document.querySelector(&quot;#action&quot;).innerHTML += `&lt;h4 style=&quot;color:red;&quot;&gt;NO users&lt;/h4&gt;`;
+            }
+
+
+            for (let i = 0; i &lt; count; i++) {
+                element = 
+               ` &lt;div class=&quot;col-md-3&quot;&gt;
+                &lt;div class=&quot;outside&quot;&gt;
+                    &lt;h6&gt; User#`+[i+1]+`: `+ res.data[i][&quot;username&quot;]  +`&lt;/h6&gt; &lt;br/&gt;
+                    &lt;h6&gt; Email: `+ res.data[i][&quot;email&quot;]+ `&lt;/h6&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;`
+                 document.querySelector(&quot;#action&quot;).innerHTML += element;
+  
+              }
+  
+        }
+    });
+}</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ cyclomatic }} <br>
+    Length : {{ halstead.length }} <br>
+    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

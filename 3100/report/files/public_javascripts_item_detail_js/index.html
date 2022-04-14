@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - public\javascripts\item_detail.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>public\javascripts\item_detail.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">66.88</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">456</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">38.99</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">3.00</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">$(document).ready(function () {
+
+
+
+
+    var postid = window.location.search.substring(7);
+
+    $.post(&quot;/post/show&quot;, {
+        &quot;_id&quot;: postid
+    }, function (res) {
+        if (res.status == 2) {
+            location.href = &quot;/public/photos.html&quot;
+        }
+        else {
+
+            
+            element =
+                `&lt;div class =&quot;row&quot; style=&quot;margin-top:4em; margin-bottom:4em;  border: 2px solid ; border-radius:5px ;padding: 2em;&quot;&gt;
+                &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;img src=&#039;photos/`+ res.data[0][&quot;photos&quot;] + `&#039;  style=&quot;max-width:300px&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;h6&gt;&lt;span&gt; Holder:&lt;/span&gt; &amp;ensp;`+ res.data[0][&quot;holder&quot;] + `&lt;/h6&gt; &lt;br/&gt;&lt;br/&gt;
+                &lt;h5&gt;&lt;span&gt;Item name:&lt;/span&gt; &amp;ensp;`+ res.data[0][&quot;title&quot;] + `&lt;/h5&gt; &lt;br/&gt;&lt;br/&gt;
+                &lt;h4&gt;&lt;span&gt;Item Description:&lt;/span&gt; &amp;ensp;` + res.data[0][&quot;content&quot;] + `&lt;/h4&gt;&lt;br/&gt;&lt;br/&gt;
+                &lt;p&gt;&lt;span&gt;Item Usage: &lt;/span&gt; &amp;ensp; --` + res.data[0][&quot;itemusage&quot;] + `--&lt;/p&gt;&lt;br/&gt;
+                &lt;div style=&quot;display: flex;&quot; id=&quot;ebtn&quot;&gt;
+                &lt;a onclick=&quot;deletepost()&quot; class=&quot;delt&quot;  id=&quot;delt1&quot; style=&quot;margin-right: 2em;&quot;&gt;Delet&lt;/a&gt;
+                &lt;a onclick=&quot;editpost()&quot; class=&quot;edit&quot; id=&quot;edit1&quot;&gt;Edit&lt;/a&gt; 
+             &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;/div&gt;
+                `
+
+            document.querySelector(&quot;#postdetail&quot;).innerHTML += element;
+
+            if (res.data[0][&quot;holder&quot;] == $.cookie(&#039;username&#039;) || $.cookie(&quot;A&quot;) == &quot;true&quot;) {
+                $(&quot;#delt1&quot;).show();
+                $(&quot;#edit1&quot;).show();
+            }
+            else {
+                $(&quot;#delt1&quot;).hide();
+                $(&quot;#edit1&quot;).hide();
+            }
+
+
+        }
+    });
+
+
+    $.post(&quot;/blog/loadarticle&quot;, {
+        &quot;postid&quot;: postid
+    }, function (res) {
+        if (res.status == 1) {
+
+            alert(res.msg)
+        }
+        else {
+
+            var date1 = new Date(res.data.postdate)
+            var date = (date1.getDate() + &quot;/&quot; + [date1.getMonth() + 1] + &quot;/&quot; + date1.getFullYear() + &quot;&amp;ensp; &amp;ensp;&quot; + date1.getHours() + &quot;:&quot; + date1.getMinutes());
+
+            var element2
+            element2
+                =
+                `&lt;div class =&quot;row&quot; style=&quot;margin-top:4em; margin-bottom:4em;&quot;&gt;
+            &lt;div class=&quot;col-md-12&quot; &gt;
+            &lt;h2&gt;Leave Your Comment!&lt;/h2&gt;
+            &lt;div style=&quot;position: relative; border: 0.8px solid rgb(0, 0, 0); border-radius: 8px;padding:1.5em; background-color: #dddddd;&quot;&gt;
+            &lt;div style=&quot;display:flex&quot;&gt;
+            &lt;img src=&quot;../public/images/usericon.png&quot; style=&quot;width:35px; float:left;&quot;/&gt;
+            &lt;h5 style=&quot; float:left;&quot;&gt;`+ res.data[&quot;username&quot;] + `&lt;/h5&gt;
+            &lt;/div&gt;&lt;br/&gt;
+            &lt;h4 style=&quot; position:absolute; right:15px;top:10px&quot;&gt;Post Date: &amp;ensp;` + date + `&lt;/h4&gt;
+            &lt;div id=&quot;content1&quot;&gt;
+            &lt;h3 style=&quot;font-weight:bold; font-size:1.2em;&quot; &gt;Title: &amp;ensp;`+ res.data[&quot;title&quot;] + `&lt;/h3&gt;  &lt;hr style=&quot;border-top: 1px dashed&quot;/&gt;&lt;br/&gt;
+            
+            &lt;h4 style=&quot;color: #2b2b2b;&quot;&gt;` + res.data[&quot;content&quot;] + `&lt;/h4&gt;
+            &lt;div class=&quot;btns&quot;style=&quot; position:absolute !important; right:30px !important;bottom:15px;&gt;
+            &lt;input type=&quot;submit&quot; onclick=&quot;&quot; value=&quot;&quot; /&gt;
+            &lt;input type=&quot;submit&quot; onclick=&quot;showcomment()&quot; value=&quot;Comment&quot; /&gt;
+            &lt;input type=&quot;submit&quot; onclick=&quot;editarticle()&quot; id=&quot;editpost1&quot; value=&quot;Edit&quot; /&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+            
+            `
+            document.querySelector(&quot;#postdetail&quot;).innerHTML += element2;
+
+            if (res.data[&quot;username&quot;] == $.cookie(&#039;username&#039;) || $.cookie(&quot;A&quot;) == &quot;true&quot;) {
+                $(&quot;#editpost1&quot;).show();
+                
+            }
+            else {
+
+                $(&quot;#editpost1&quot;).hide();
+            }
+            
+
+
+            var comment
+            var count = 1;
+
+            res.data.comment.forEach((e) =&gt; {
+                comment = &quot;&quot;;
+                var cmdate = new Date(e.date)
+                cmdate = (cmdate.getDate() + &quot;/&quot; + [cmdate.getMonth() + 1] + &quot;/&quot; + cmdate.getFullYear() + &quot;&amp;ensp; &amp;ensp;&quot; + cmdate.getHours() + &quot;:&quot; + cmdate.getMinutes());
+                comment =
+                    `&lt;div class =&quot;row&quot; style=&quot;margin-top:1em; margin-bottom:1em;&quot;&gt;
+            &lt;div class=&quot;col-md-12&quot; &gt;
+            &lt;div style=&quot;position: relative; border: 0.8px solid rgb(0, 0, 0); border-radius: 8px;padding:1.5em; background-color: #e4e3e3;&quot;&gt;
+            &lt;h4&gt;Comment #`+ count + `&lt;h4&gt;&lt;br/&gt;
+            &lt;div style=&quot;display:flex&quot;&gt;
+            &lt;img src=&quot;../public/images/usericon.png&quot; style=&quot;width:35px; float:left;&quot;/&gt;
+            &lt;h5 style=&quot; float:left;&quot;&gt;`+ e.name + `&lt;/h5&gt;
+            &lt;/div&gt;
+            &lt;h4 style=&quot; position:absolute; right:15px;top:10px&quot;&gt;Date: &amp;ensp;` + cmdate + `&lt;/h4&gt;
+            &lt;div id=&quot;content1&quot;&gt;
+            &lt;hr style=&quot;border-top: 1px dashed&quot;/&gt;
+            &lt;h4 style=&quot;color: #2b2b2b;&quot;&gt;` + e.message + `&lt;/h4&gt;
+            &lt;div class=&quot;btns&quot;style=&quot; position:absolute !important; right:30px !important;bottom:10px;&gt;
+            &lt;input type=&quot;submit&quot; onclick=&quot;&quot; value=&quot;&quot; /&gt;
+            &lt;input type=&quot;submit&quot; onclick=&quot;deletecomment()&quot; id =&quot;decom&quot; value=&quot;Delete&quot; /&gt;
+            &lt;input type=&quot;submit&quot; onclick=&quot;editcommentbtn() id=&quot;editcom1&quot; value=&quot;Edit&quot; /&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+            `
+                count++;
+                document.querySelector(&quot;#postdetail&quot;).innerHTML += comment;
+                
+
+                var ed = `
+
+
+                &lt;div id=&quot;editcomment1&quot; style=&quot;width:40%; padding: 2em; ;display: none; position: fixed; top:50%; left:30%; border-radius: 8px; background-color: rgb(192, 192, 192, 0.8); z-index: 100;&quot;&gt;
+                &lt;fieldset style=&quot;margin-left:auto; margin-right:auto;&quot;&gt;
+                    &lt;h3&gt;Comment&lt;/h3&gt;
+            
+                    &lt;label&gt;Edit Content&lt;/label&gt;
+                    &lt;textarea id=&quot;content4&quot; name=&quot;content4&quot; style=&quot;width: 100%; height:100px&quot;&gt;&lt;/textarea&gt;
+            
+                    &lt;div class=&quot;btns&quot;&gt;
+                        &lt;input type=&quot;submit&quot; onclick=&quot;editcomment1()&quot; value=&quot;Edit&quot; /&gt;
+                        &lt;input type=&quot;submit&quot; onclick=&quot;editcommentbtn()&quot; value=&quot;Cancel&quot; /&gt;
+                    &lt;/div&gt;
+                &lt;/fieldset&gt;
+            &lt;/div&gt;`
+                document.querySelector(&quot;#postdetail&quot;).innerHTML += ed;
+
+                if (e.name == $.cookie(&#039;username&#039;) || $.cookie(&quot;A&quot;) == &quot;true&quot;) {
+                    $(&quot;#decom&quot;).show();
+                    $(&quot;#editcom1&quot;).show();
+                    
+                }
+                else {
+    
+                    $(&quot;#decom&quot;).hide();
+                    $(&quot;#editcom1&quot;).hide();
+                }
+
+            });
+
+
+        }
+
+
+    });
+
+
+
+});
+
+
+function deletepost() {
+    if (confirm(&#039;Are you sure to delet this post?&#039;)) {
+        var postid = window.location.search.substring(7);
+
+        $.post(&quot;/post/delete&quot;, {
+            &quot;_id&quot;: postid
+        }, function (res) {
+            if (res.status == 1) {
+                alert(res.msg);
+            }
+            else {
+                $.post(&quot;/blog/deletearticle&quot;, {
+                    &quot;postid&quot;: postid
+                }, function (res) {
+                    if (res.status == 1) {
+                        alert(res.msg);
+                    }
+                    else {
+                        alert(&quot;Deleted!&quot;)
+                        location.href = &quot;/public/photos.html&quot;
+                    }
+
+                })
+            }
+        });
+
+    }
+
+}
+
+
+
+
+
+
+function editpost() {
+
+    var postid = window.location.search.substring(7);
+
+    $.post(&quot;/post/show&quot;, {
+        &quot;_id&quot;: postid
+    }, function (res) {
+        if (res.status == 1) {
+            alert(res.msg);
+        }
+        else {
+            const el = document.getElementById(&quot;postdetail&quot;);
+            while (el.firstChild) el.removeChild(el.firstChild);
+
+            var element2
+            if (res.data[0][&quot;itemusage&quot;] == &quot;First-Hand&quot;) {
+                element2 = `                        
+                &lt;option value=&quot;First-Hand&quot; selected&gt;First-Hand&lt;/option&gt;
+                &lt;option value=&quot;Second-Hand&quot;&gt;Second-Hand&lt;/option&gt;`
+            }
+            else {
+                element2 =
+                    `&lt;option value=&quot;First-Hand&quot;&gt;First-Hand&lt;/option&gt;
+                &lt;option value=&quot;Second-Hand&quot; selected&gt;Second-Hand&lt;/option&gt;`
+            }
+
+            element =
+                `&lt;br/&gt;
+            &lt;fieldset id=&quot;chpwd&quot; style=&quot;margin-left:auto; margin-right:auto;&quot;&gt;
+                &lt;h3&gt;Edit Post&lt;/h3&gt;
+                &lt;label&gt;Title&lt;/label&gt;
+                &lt;input type=&quot;text&quot; id=&quot;title&quot; name=&quot;title&quot; value=&quot;`+ res.data[0][&quot;title&quot;] + `&quot; /&gt;
+        
+                &lt;label&gt;itemusage&lt;/label&gt;
+                    &lt;select id=&quot;itemusage&quot;&gt;
+                    `+ element2 + `
+                    &lt;/select&gt;
+                &lt;label&gt;Description&lt;/label&gt;
+                &lt;label for=&quot;editim&quot;&gt; Choose Image &lt;/label&gt;
+                &lt;div&gt; &lt;input type=&quot;file&quot; &#039; name=&quot;file&quot; id=&quot;photo1&quot; accept=&quot;image/jpeg,image/jpg,image/gif,image/png&quot; onchange=&quot;Editp(event)&quot; /&gt; &lt;/div&gt;
+                &lt;div&gt; &lt;img id=&quot;edit1&quot; style=&quot;max-width:300px&quot;/&gt; &lt;/div&gt;
+                &lt;textarea id=&quot;description&quot; name=&quot;description&quot;  &gt;`+ res.data[0][&quot;content&quot;] + `&lt;/textarea&gt;
+                &lt;div class=&quot;btns&quot;&gt;
+                    &lt;input type=&quot;submit&quot; onclick=&quot;postedit()&quot; value=&quot;Update&quot; /&gt;
+                    &lt;input type=&quot;submit&quot; onclick=&quot;canceledit()&quot; value=&quot;Cancel&quot; /&gt;
+                &lt;/div&gt;
+            &lt;/fieldset&gt;
+            `;
+
+            document.querySelector(&quot;#postdetail&quot;).innerHTML += element;
+
+        }
+    });
+
+}
+
+function Editp(e) {
+    var image = document.getElementById(&#039;edit1&#039;);
+    image.src = URL.createObjectURL(e.target.files[0]);
+    image.onload = function () {
+        URL.revokeObjectURL(image.src)
+    }
+};
+
+function canceledit() {
+    location.reload()
+}
+
+
+function postedit() {
+    let postid = window.location.search.substring(7);
+    let title = $(&quot;#title&quot;).val();
+    let itemusage = $(&quot;#itemusage&quot;).val();
+    let description = $(&quot;#description&quot;).val().replace(/ /g, &#039;&amp;nbsp&#039;).replace(/\n/g, &#039;&lt;br /&gt;&#039;);
+    let photo = $(&quot;#photo1&quot;).val().replace(/C:\\fakepath\\/i, &#039;&#039;);
+
+
+    if (title == &quot;&quot; || itemusage == &quot;&quot; || description == &quot;&quot;) {
+        alert(&quot;please fillin all the fields!&quot;);
+    }
+
+    else {
+        $.post(&quot;/post/update&quot;, { &quot;_id&quot;: postid, &quot;title&quot;: title, &quot;itemusage&quot;: itemusage, &quot;content&quot;: description, &quot;photo&quot;: photo }, function (res) {
+            if (res.status == 0) {
+                alert(&quot;Post Updated&quot;);
+                location.href = &quot;/public/photos.html&quot;
+            }
+            else {
+                alert(res.msg);
+            }
+        });
+    }
+}
+
+
+function editarticle() {
+
+
+    var postid = window.location.search.substring(7);
+
+    $.post(&quot;/blog//loadarticle&quot;, {
+        &quot;postid&quot;: postid
+    }, function (res) {
+        if (res.status == 1) {
+            alert(res.msg);
+        }
+        else {
+            const el = document.getElementById(&quot;content1&quot;);
+            while (el.firstChild) el.removeChild(el.firstChild);
+
+            element =
+                `&lt;br/&gt;
+            &lt;fieldset id=&quot;chpwd&quot; style=&quot;margin-left:auto; margin-right:auto;&quot;&gt;
+                &lt;label&gt;Title&lt;/label&gt;
+                &lt;input type=&quot;text&quot; id=&quot;title1&quot; name=&quot;title&quot; value=&quot;`+ res.data[&quot;title&quot;] + `&quot;  style=&quot;width:80%&quot;/&gt;
+        
+                &lt;label&gt;Content&lt;/label&gt;
+                &lt;textarea id=&quot;content2&quot; name=&quot;description&quot;  style=&quot;width:80%; height:150px; !important;&quot;&gt;`+ res.data[&quot;content&quot;] + `&lt;/textarea&gt;
+        
+                &lt;div class=&quot;btns&quot;&gt;
+                    &lt;input type=&quot;submit&quot; onclick=&quot;articleedit()&quot; value=&quot;Update&quot; /&gt;
+                    &lt;input type=&quot;submit&quot; onclick=&quot;canceledit()&quot; value=&quot;Cancel&quot; /&gt;
+                &lt;/div&gt;
+            &lt;/fieldset&gt;
+            `;
+            document.querySelector(&quot;#content1&quot;).innerHTML += element;
+
+        }
+    });
+
+
+}
+
+function articleedit() {
+    let postid = window.location.search.substring(7);
+    let title = $(&quot;#title1&quot;).val();
+    let description = $(&quot;#content2&quot;).val().replace(/ /g, &#039;&amp;nbsp&#039;).replace(/\n/g, &#039;&lt;br /&gt;&#039;);
+
+    if (title == &quot;&quot; || description == &quot;&quot;) {
+        alert(&quot;please fillin all the fields!&quot;);
+    }
+
+    else {
+        $.post(&quot;/blog/articleupdate&quot;, { &quot;postid&quot;: postid, &quot;title&quot;: title, &quot;content&quot;: description }, function (res) {
+            if (res.status == 0) {
+                alert(&quot;Updated&quot;);
+                location.reload()
+            }
+            else {
+                alert(res.msg);
+            }
+        });
+    }
+}
+
+function showcomment() {
+    if ($(&#039;#commentbox&#039;).css(&#039;display&#039;) == &quot;none&quot;) {
+        $(&#039;#commentbox&#039;).css(&#039;display&#039;, &#039;block&#039;);
+    }
+    else {
+        $(&#039;#commentbox&#039;).css(&#039;display&#039;, &#039;none&#039;);
+    }
+
+}
+
+function editcommentbtn() {
+    if ($(&#039;#editcomment1&#039;).css(&#039;display&#039;) == &quot;none&quot;) {
+        $(&#039;#editcomment1&#039;).css(&#039;display&#039;, &#039;block&#039;);
+    }
+    else {
+        $(&#039;#editcomment1&#039;).css(&#039;display&#039;, &#039;none&#039;);
+    }
+
+}
+
+
+
+
+function editcomment() {
+
+
+    var postid = window.location.search.substring(7);
+
+    $.post(&quot;/blog//loadarticle&quot;, {
+        &quot;postid&quot;: postid
+    }, function (res) {
+        if (res.status == 1) {
+            alert(res.msg);
+        }
+        else {
+            const el = document.getElementById(&quot;content1&quot;);
+            while (el.firstChild) el.removeChild(el.firstChild);
+
+            element =
+                `&lt;br/&gt;
+            &lt;fieldset id=&quot;chpwd&quot; style=&quot;margin-left:auto; margin-right:auto;&quot;&gt;
+                &lt;label&gt;Title&lt;/label&gt;
+                &lt;input type=&quot;text&quot; id=&quot;title1&quot; name=&quot;title&quot; value=&quot;`+ res.data[&quot;title&quot;] + `&quot;  style=&quot;width:80%&quot;/&gt;
+        
+                &lt;label&gt;Content&lt;/label&gt;
+                &lt;textarea id=&quot;content2&quot; name=&quot;description&quot;  style=&quot;width:80%; height:150px; !important;&quot;&gt;`+ res.data[&quot;content&quot;] + `&lt;/textarea&gt;
+        
+                &lt;div class=&quot;btns&quot;&gt;
+                    &lt;input type=&quot;submit&quot; onclick=&quot;articleedit()&quot; value=&quot;Update&quot; /&gt;
+                    &lt;input type=&quot;submit&quot; onclick=&quot;showcomment()&quot; value=&quot;Cancel&quot; /&gt;
+                &lt;/div&gt;
+            &lt;/fieldset&gt;
+            `;
+            document.querySelector(&quot;#content1&quot;).innerHTML += element;
+
+        }
+    });
+
+
+}
+
+
+
+function addcomment() {
+    var message = $(&#039;#content3&#039;).val().replace(/ /g, &#039;&amp;nbsp&#039;).replace(/\n/g, &#039;&lt;br /&gt;&#039;);
+    var postid = window.location.search.substring(7);
+    if (message == &quot;&quot;) {
+        alert(&quot;Please type something&quot;)
+    }
+    else {
+
+
+        $.post(&quot;/blog/addcomment&quot;, { &quot;postid&quot;: postid, &quot;content&quot;: message, &quot;name&quot;: $.cookie(&quot;username&quot;) }, function (res) {
+            if (res.status == 0) {
+                location.reload()
+            }
+            else {
+                alert(res.msg);
+            }
+        });
+
+    }
+
+
+
+
+
+}</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ cyclomatic }} <br>
+    Length : {{ halstead.length }} <br>
+    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
