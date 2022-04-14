@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>CUexchange</title>
+	<link href="./stylesheets/style.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+		integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.6.0.js"
+		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+		crossorigin="anonymous"></script>
+	<link href="./stylesheets/style.css" rel="stylesheet">
+	<script src="./javascripts/javascript.js"></script>
+	<script src="./javascripts/register.js"></script>
+	<script src="./javascripts/login.js"></script>
+	<script src="./javascripts/header.js"></script>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Della+Respira&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"
+		integrity="sha512-aUhL2xOCrpLEuGD5f6tgHbLYEXRpYZ8G5yD+WlFrXrPy2IrWBlu6bih5C9H6qGsgqnU6mgx6KtU8TreHpASprw=="
+		crossorigin="anonymous"></script>
+
+</head>
+
+<body style="background-color: rgb(223, 223, 223);" id = "register1">
+	<header>
+		<div id="banner">
+			<nav class="navbar navbar-expand-lg navbar-light " id="navplace"
+				style="width:100%; ">
+				<div class="container">
+					<a class="navbar-brand" href="index.html"><img src="images/icon.png"
+							style="width: 25px; margin-right: 0.5em;">CUexchange</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+						aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarNav">
+						<ul class="navbar-nav" style="width: 20%;">
+							<li class="nav-item leftnav">
+								<a class="nav-link" href="index.html"> Main </a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link login" id="login1" onclick="opennavbar()">Login</a>
+								<div id="loginpage" class="coverpage">
+									<a href="javascript:void(0)" class="closebtn" onclick="closenavbar()">&times;</a>
+									<div class="coverpagecontent">
+										<div class="loginform">
+											<h3>Member Login</h3>
+											<fieldset>
+												<input type="email" id="email" name="email" placeholder="Email address"
+													/><br />
+												<input type="password" id="password1" name="password1"
+													placeholder="Password" />
+												<div class="btns">
+													<input type="submit" onclick="login()" value="Send">
+													<a href="register.html">Register</a>
+												</div>
+											</fieldset>
+										</div>
+									</div>
+								</div>
+								<a class="nav-link login" id="logout1" onclick="logout()">Logout</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</header>
+
+	<div id="register">
+		<div class="jumbotron">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<h3>Member Register</h3>
+						<fieldset>
+							<label>Username</label>
+							<input type="text" id="username1" name="username1"  />
+
+							<label>Email</label>
+							<input type="email" id="email1" name="email1" pattern="^[\w=+\-\/][\w='+\-\/\.]*@([\w\-]+\.)*cuhk\.edu\.hk$"/>
+
+							<label>Confirm Email</label>
+							<input type="email" id="confirmemail" name="confirmemail"  />
+
+							<label>Password</label>
+							<input type="password" id="pwd1" name="pwd1"/>
+
+							<label>Confirm Password</label>
+							<input type="password" id="confirmpassword" name="confirmpassword"/>
+
+							<div class="btns">
+								<input type="submit" onclick="register()" value="Send" />
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<footer class="text-center">© 2020-2021 CSCI3100 GROUP A04</footer>
+</body>
+
+</html>

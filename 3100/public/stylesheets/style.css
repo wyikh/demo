@@ -1,0 +1,551 @@
+body
+{
+	font-family: 'Della Respira', serif;
+}
+
+section
+{
+	margin-bottom: 5em;
+}
+
+a
+{
+	text-decoration:none !important;
+	color: rgb(0, 0, 0);
+}
+
+a:hover
+{
+	cursor:pointer;
+}
+
+.navbar
+{
+	position: fixed !important;
+	background-color: rgba(220, 220, 220, 0.75);
+	z-index: 1000;
+}
+
+
+#banner .navbar-brand
+{
+	color: rgb(180, 100, 0);
+	font-weight: bold;
+	font-size: 2em;
+}
+
+
+#banner .leftnav .nav-link, #banner .leftnav .nav-link:after, #banner .leftnav .nav-link:before
+{
+	transition: all 0.55s;
+}
+
+#banner .nav-link
+{
+	color: rgb(0, 0, 0);
+	font-size: 1.3em;
+	position:relative;
+}
+
+
+#banner .leftnav .nav-link:after
+{
+	color: rgb(200, 100, 10);
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin-top:auto;
+	margin-bottom: auto;
+	height: 0px;
+	content: '.';
+	color: transparent;
+	background: rgba(29, 29, 29, 0.7);
+	opacity: 0;
+	z-index: -1;
+}
+
+#banner .leftnav .nav-link:hover
+{
+	color: rgb(255, 255, 255);
+}
+
+#banner .leftnav .nav-link:hover:after
+{
+	opacity: 1;
+	height: 74px;
+}
+
+.navbar-collapse
+{
+	flex-grow: 0;
+}
+
+
+.login
+{
+	background-color: rgb(225, 145, 50);
+	margin-left: 2em;
+	padding-left: 0.6em;
+	padding-right: 0.6em;
+	border-radius: 5px;
+	color: rgb(255, 255, 255) !important;
+}
+
+.login:hover
+{
+	background-color: rgb(200, 100, 10);
+
+}
+
+
+
+a.closebtn
+{
+	color: rgb(200, 100, 10) !important;
+}
+
+.coverpage { 
+	height: 100%;
+	width: 0;
+	position: fixed; 
+	z-index: 1; 
+	left: 0;
+	top: 0;
+	background-color: rgba(0,0,0, 0.95); 
+	overflow-x: hidden; 
+	transition: 0.5s; 
+  }
+
+  
+  .coverpagecontent {
+	position: relative;
+	top: 25%;
+	width: 100%;
+	text-align: center; 
+	margin-top: 30px;
+  }
+  
+
+  .coverpage a:hover, .coverpage a:focus {
+	color: #f1f1f1;
+  }
+  
+  .coverpage .closebtn {
+	position: absolute;
+	top: 20px;
+	right: 45px;
+	font-size: 60px;
+  }
+
+#form{
+	padding:50px 20px;
+}
+
+.loginform h3{
+	font-size: 2em;
+	color:rgb(255, 255, 255) ;
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+fieldset label{
+	display: block;
+	margin-bottom: 1px;
+}
+
+
+input[type="text"],input[type="email"],input[type="password"], textarea, select{
+	width:25%;
+	padding:7px;
+	border:solid 1px rgb(200, 100, 10);
+	font-size: 1em;
+	font-family: 'Open Sans', sans-serif;
+	margin-bottom: 1em;
+}
+
+
+.loginform .btns{
+	
+	margin-top: 40px;
+}
+
+.btns>*, .delt, .edit{
+	padding:10px 20px;
+	background-color: #FFF;
+	border:solid 1px #999;
+	border-radius: 5px;
+	text-decoration: none;
+	cursor: pointer;
+	font-size: 1em;
+	margin-right: 6px;
+	color:#333;
+}
+
+.btns>*:hover,  .delt:hover, .edit:hover{
+	background-color: rgb(200, 100, 10);
+	color:#FFF;
+	background-color: #e4e3e3;
+	
+}
+
+#itemdetail
+{
+	background-image: url(../images/personal.jpg);
+	height: 100vh;
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+
+.jumbotron
+{
+	background-color: rgb(255, 255, 255,0);
+}
+
+#bgi
+{
+	background-image: url(../images/banner.jpeg);
+	height: 100vh;
+	background-size: cover;
+	background-attachment: fixed;
+	background-color: rgb(0, 0, 0,0.4);
+	background-blend-mode:darken;
+}
+
+.jumbotron .container
+{
+	margin-top: 5%;
+}
+
+#banner h1
+{
+	color: rgb(255, 255, 255);
+	font-weight: bold;
+	font-size: 5em;
+	margin-bottom: 0.5em;
+}
+
+#banner p
+{
+	color: rgb(255, 255, 255);
+	font-size: 2.3em;
+	
+}
+
+
+
+#banner .btn
+{
+	color: rgb(255, 255, 255);
+	background-color: rgb(225, 145, 50);
+	font-size: 1.5em;
+	margin-top: 1em;
+	padding: 0.5em;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+#banner .btn:hover
+{
+	color: rgb(255, 255, 255);
+	background-color: rgb(200, 100, 10);
+	font-size: 1.5em;
+	margin-top: 1em;
+	padding: 0.5em;
+	
+}
+
+#exchanging .col-md-12
+{
+	margin-bottom: 0.5em;
+}
+
+.searchbar input[type=text] {
+	padding: 10px;
+	font-size: 16px;
+	border: 0.8px solid rgb(0, 0, 0);
+	float: left;
+	width: 80%;
+  }
+ 
+.searchbar button {
+	float: left;
+	width: 10%;
+	padding: 10px;
+	background: rgb(200, 100, 10);
+	font-size: 16px;
+	border-left: none; 
+	cursor: pointer;
+	border: 1px solid rgb(200, 100, 10);
+  }
+
+
+#banner .exchangebanner
+{
+	background-image: url(../images/exchange.jpeg);
+	background-size: cover;
+	height: 45vh;
+}
+
+#exchanging , #personmenu
+{
+	margin-top: 2em;
+}
+
+
+#exchanging img ,#personmenu img
+{
+	max-width: 100%;
+	max-height: 180px;
+	border-radius: 5px;
+}
+
+#exchanging h2, #personmenum h2
+{
+	margin-bottom: 1em;
+}
+
+#exchanging .row , #personmenu .row
+{
+	margin-bottom: 2em;
+}
+
+#exchanging .outside, #personmenu .outside
+{
+	position: relative;
+	background: rgb(255, 255, 255);
+	box-shadow: 0 0 1px 0 rgb(0, 0, 0, 0.5);
+	height: 100%;
+	padding: 1em;
+}
+
+#exchanging .col-md-3, #personmenu .col-md-3
+{
+
+	padding-left:0 !important;
+	padding-right:0 !important;
+
+}
+
+#exchanging .col-md-3 h6, #personmenu .col-md-3 h6
+{
+	font-weight: bold;
+}
+
+#exchanging .col-md-3 h5, #personmenu .col-md-3 h5
+{
+	font-weight: bold;
+	color: #d4a43c;
+	font-size: 1.5em;
+}
+
+#exchanging .col-md-3 span, #personmenu .col-md-3 span
+{
+	color: #818181;
+	font-size: 1em;
+}
+
+#exchanging .col-md-3 u, #personmenu .col-md-3 u
+{
+	color: #000000;
+}
+
+#exchanging .outside:hover, #personmenu .outside:hover
+{
+	box-shadow: 0 0 10px 0 rgb(0, 0, 0, 0.5);
+	transform: scale(0.98);
+}
+
+#exchanging .lower, #personmenu .lower
+{
+	margin: 1.5em 0;
+	
+}
+
+
+footer
+{
+	font-size: 1.3em;
+	background-color: rgb(226, 225, 225);
+	position: fixed;
+	width: 100%;
+	z-index: 10;
+	bottom:0;
+
+}
+
+#aboutpage
+{
+	background-image: url(../images/about.png);
+	height: 80vh;
+	background-size: cover;
+	background-attachment: fixed;
+	
+}
+
+#about h1
+{
+	text-align: center;
+	margin-bottom: 1em;
+}
+
+#about p
+{
+	text-align: center;
+	font-size: 1.3em;
+}
+
+#overview
+{
+	 border-left: 6px solid rgb(200, 100, 10) !important; 
+	 background-color: rgb(255, 255, 255, 0.85);
+	 padding: 4em;
+	 border-radius: 10px;
+
+}
+
+#about img
+{
+	max-width: 100%;
+	border-radius: 5px;
+	
+
+}
+
+#register1
+{
+	background-image: url("../images/register.jpg");
+}
+
+#personal1
+{
+
+	background-image: url("../images/personal.jpg");
+}
+
+#register .col-md-12
+{
+	border-left: 6px solid rgb(200, 100, 10) !important; 
+	background-color: rgb(255, 255, 255, 0.6);
+	padding: 4em;
+	border-radius: 10px;
+}
+
+#personmenu .leftnav {
+	height: 70%;
+	width: 150px;
+	z-index: 10;
+	top: 20%;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255, 0.6);
+	border:solid 1px rgb(0, 0, 0);
+	overflow-x: hidden;
+	
+}
+  
+#personmenu .leftnav a {
+	padding: 6px 8px 6px 16px;
+	text-decoration: none;
+	font-size: 25px;
+	color: rgb(0, 0, 0);
+	display: block;
+  }
+  
+#personmenu .leftnav a:hover {
+	color: #d4a43c;
+  }
+
+
+#postdetail h6{
+	font-size: 1.4em;
+}
+
+#postdetail h5{
+	font-size: 1.3em;
+}
+
+#postdetail h4{
+	font-size: 1.1em;
+}
+#postdetail p{
+	font-size: 1.3em;
+}
+
+#postdetail span{
+	font-weight: bold;
+	color: #d4a43c;
+}
+  
+
+ 
+
+
+@media screen and (max-width: 991px) {
+
+#banner .nav-link
+{
+	border-radius: 0;
+	border-bottom: 2px solid rgb(160, 0, 0)!important;
+	font-weight: bold;
+}
+
+.login
+{
+	background-color: rgb(255, 255, 255, 0);
+	margin-left: 0em;
+	padding-left: 0;
+	padding-right: 0;
+	color: rgb(0, 0, 0) !important;
+
+}
+
+.login:hover
+{
+	background-color: rgba(255, 255, 255, 0);
+	color: rgb(200, 100, 10) !important;
+
+}
+
+#banner h1
+{
+	font-size: 4.5em;
+}
+
+.jumbotron .container
+{
+	margin-top: 13%;
+}
+
+#exchanging .col-md-3
+{
+	margin-bottom: 3em;
+}
+#exchanging .row
+{
+	margin: 0;
+}
+
+#about h1
+{
+	font-size: 1.3em;
+}
+
+#about p
+{
+	font-size: 0.9em;
+}
+
+#banner .leftnav .nav-link:hover:after
+{
+	opacity: 1;
+	height: 0px;
+}
+
+}
+
+
+  
